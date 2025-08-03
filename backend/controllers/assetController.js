@@ -6,9 +6,9 @@ const createAsset = async (req, res) => {
 
     try {
 
-        const { symbol, name, curr_price, start_price, end_price } = req.body
+        const { symbol, name, current_price, start_price, end_price } = req.body
 
-        if (!symbol || !name || !curr_price || !end_price || !start_price) {
+        if (!symbol || !name || !current_price || !end_price || !start_price) {
             return res.status(400).json ({
                 message: 'Inadequate Records. Unable to create and list asset!'
             })
@@ -17,7 +17,7 @@ const createAsset = async (req, res) => {
         const newAsset = await Asset.create({
             symbol: symbol,
             name: name,
-            curr_price: curr_price,
+            current_price: current_price,
             start_price: start_price,
             end_price: end_price
         })
@@ -151,10 +151,48 @@ const deleteAsset = async (req, res) => {
 
 }
 
+// Function to get stocks within a certain current price range
+const getAssetWithinRange = async (req, res) => {
+
+    const min = parseInt(req.params.min)
+    const max = parseInt(req.params.max)
+
+    try {
+
+        const assets = await Asset.findAll({
+            where: {
+                curr_price: {
+                    [Op.between]: [min, max]
+                }
+            }
+        })
+
+        if (!assets) {
+            return res.status(404).json({
+                message: 'Oops! Cant find the Asset within the specified range!'
+            })
+        }
+
+        res.status(200).json({
+            message: 'Sure! Here is/are the asset(s)',
+            assets
+        })
+
+
+
+    } catch (err) {
+        res.status(500).json({
+            message: `Error finding the asset within the range: ${err}`
+        })
+    }
+
+}
+
 module.exports = {
     createAsset,
     getAllAssets,
     getAssetById,
     getAssetBySymbol,
-    deleteAsset
+    deleteAsset,
+    getAssetWithinRange
 }

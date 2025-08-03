@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const { createAsset, getAllAssets, getAssetById, getAssetBySymbol, deleteAsset } = require('../controllers/assetController')
+const { createAsset, getAllAssets, getAssetById, getAssetBySymbol, deleteAsset, getAssetWithinRange } = require('../controllers/assetController')
 
 /*
     GET Request -> Get all the assets
@@ -32,5 +32,11 @@ router.post('/', createAsset)
     /api/asset/:name
 */
 router.delete('/', deleteAsset)
+
+/*
+    GET Request -> Get the assets whose current price is within the requested range
+    /api/asset/range/:min/:max
+*/
+router.get('/range/:min/:max', getAssetWithinRange)
 
 module.exports = router
