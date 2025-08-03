@@ -57,7 +57,35 @@ const createPortfolio = async (req, res) => {
     }
 }
 
+// A function to get the Portfolio by the unique ID ( primary key)
+const getPortfolioById = async (req, res) => {
+
+    try {
+
+        const { id } = req.params
+        const portfolioMatch = await Portfolio.findByPk(id)
+
+        if (!portfolioMatch) {
+            return res.status(404).json({
+                message: 'Oops! No such portfolio exists'
+            })
+        } else {
+            res.status(200).json({
+                message: "Hey, Here is the portfolio you were looking for!",
+                portfolioMatch
+            })
+        }
+
+    } catch (err) {
+        return res.status(500).json({
+            message: `Error in displaying the portfolio: ${err}`
+        })
+    }
+
+}
+
 module.exports = {
     createPortfolio,
-    getAllPortfolios
+    getAllPortfolios,
+    getPortfolioById
 }
