@@ -34,6 +34,60 @@ const createAsset = async (req, res) => {
 
 }
 
+// Function to fetch all the assets
+const getAllAssets = async (req, res) => {
+
+    try {
+
+        const assets = await Asset.findAll()
+        if (assets.length == 0) {
+            return res.status (200).json ({
+                message: "There are no assets to be shown."
+            })
+        }
+
+        res.status(200).json({
+            message: 'Here are all the assets created till date.',
+            assets
+        })
+
+    } catch (err) {
+        res.status(500).json({
+            message: `Error displaying assets: ${err}`
+        })
+    }
+
+}
+
+// Function to get a particular asset by ID
+const getAssetById = async (req, res) => {
+
+    try {
+
+        const { id } = req.params 
+
+        const assetMatch = await Asset.findByPk(id)
+        if (!assetMatch) {
+            return res.status(404).json({
+                message: 'Oops! Cant find the Asset!'
+            })
+        }
+
+        res.status(200).json({
+            message: 'SUre! Here is the asset',
+            assetMatch
+        })
+
+    } catch (err) {
+        res.status(500).json({
+            message: `Error fetching the asset ${err}`
+        })
+    }
+
+}
+
 module.exports = {
-    createAsset
+    createAsset,
+    getAllAssets,
+    getAssetById
 }
