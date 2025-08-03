@@ -1,7 +1,13 @@
 const express = require('express')
 const router = express.Router()
 
-const { createPortfolio } = require('../controllers/portfolioController')
+const { createPortfolio, getAllPortfolios } = require('../controllers/portfolioController')
+
+/*
+    GET Request
+    /api/portfolio
+*/
+router.get('/', getAllPortfolios)
 
 /*
     POST Request
