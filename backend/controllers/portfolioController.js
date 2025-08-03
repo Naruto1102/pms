@@ -84,8 +84,72 @@ const getPortfolioById = async (req, res) => {
 
 }
 
+// Function to update the details of the protfolio ( just the name ) by its ID
+const updatePortfolio = async (req, res) => {
+
+    try {
+
+        const { id } = req.params
+        const { new_name } = req.body // The New Name of the Portfolio
+
+        const portfolio = await Portfolio.findByPk(id) 
+        const old_name = portfolio.name
+
+        if (!portfolio) {
+            return res.status(404).json ({
+                message: "Oops! No such portfolio found!"
+            })
+        } else {
+            portfolio.name = new_name
+            portfolio.save()
+
+            return res.status(200).json({
+                message: `Portfolio ${old_name} changed to ${new_name}`,
+                portfolio
+            })
+        }
+
+    } catch (err) {
+
+        res.status(500).json({
+            message: `Error updating the Portfolio Details: ${err}`
+        })
+
+    }
+
+}
+
+// Function to delete a portfolio by its ID
+const deletePortfolio = async (req, res) => {
+
+    try {
+
+        const { id } = req.params
+
+        const portfolio = await Portfolio.findByPk(id)
+        if (!portfolio) {
+            return res.status(404).json ({
+                message: "Oops! No such portfolio found!"
+            })
+        } else {
+            await portfolio.destroy()
+            return res.status(200).json({
+                message: "Portfolio deleted successfully!"
+            })
+        }
+
+    } catch (err) {
+        res.status(500).json({
+            message: `Error deleting the portfolio: ${err}`
+        })
+    }
+
+}
+
 module.exports = {
     createPortfolio,
     getAllPortfolios,
-    getPortfolioById
+    getPortfolioById,
+    updatePortfolio,
+    deletePortfolio
 }

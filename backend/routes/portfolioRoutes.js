@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const { createPortfolio, getAllPortfolios, getPortfolioById } = require('../controllers/portfolioController')
+const { createPortfolio, getAllPortfolios, getPortfolioById, updatePortfolio, deletePortfolio } = require('../controllers/portfolioController')
 
 /*
     GET Request
@@ -21,5 +21,18 @@ router.get('/:id', getPortfolioById)
     /api/portfolio/ -> /
 */
 router.post('/', createPortfolio)
+
+/*
+    {PUT} Request -> getting a specific portfolio by ID and updating the name
+    /api/portfolio/:id
+*/
+
+router.put('/:id', updatePortfolio)
+
+/*
+    DELETE request -> Delete a portfolio by its ID
+    /api/portfolio/:id
+*/
+router.delete('/:id', deletePortfolio)
 
 module.exports = router
