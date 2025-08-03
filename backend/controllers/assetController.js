@@ -86,8 +86,75 @@ const getAssetById = async (req, res) => {
 
 }
 
+// Function to get the asset by their Unique Symbol
+const getAssetBySymbol = async ( req, res ) => {
+
+    try {
+
+        const { symbol } = req.params
+
+        const assetMatch = await Asset.findOne({
+            where: {
+                symbol: symbol
+            }
+        })
+
+        if (!assetMatch) {
+            return res.status(404).json({
+                message: 'Oops! Cant find the Asset!'
+            })
+        }
+
+        res.status(200).json({
+            message: 'Sure! Here is the asset',
+            assetMatch
+        })
+
+    } catch (err) {
+        res.status(500).json({
+            message: `Error fetching the asset ${err}`
+        })
+    }
+
+}
+
+// Function to delete a particular asset by its name
+const deleteAsset = async (req, res) => {
+
+    try {
+
+        const { name } = req.body 
+
+        const assetMatch = await Asset.findOne({
+            where: {
+                name: name
+            }
+        })
+
+        if (!assetMatch) {
+            return res.status(404).json({
+                message: 'Oops! Cant find the Asset to delete'
+            })
+        }
+
+        await assetMatch.destroy()
+
+        res.status(200).json({
+            message: `Deleted Asset ${name}`
+        })
+
+    } catch (err) {
+        res.status(500).json({
+            message: `Error deleting the asset ${err}`
+        })
+    }
+
+}
+
 module.exports = {
     createAsset,
     getAllAssets,
-    getAssetById
+    getAssetById,
+    getAssetBySymbol,
+    deleteAsset
 }
