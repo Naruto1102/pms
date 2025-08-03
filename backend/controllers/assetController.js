@@ -1,5 +1,6 @@
 // This contains all the behind-the-scene function that deals with the routes of Asset
 const Asset = require('../models/Asset')
+const { Op } = require('sequelize')
 
 // Function to create an asset
 const createAsset = async (req, res) => {
@@ -161,7 +162,7 @@ const getAssetWithinRange = async (req, res) => {
 
         const assets = await Asset.findAll({
             where: {
-                curr_price: {
+                current_price: {
                     [Op.between]: [min, max]
                 }
             }
