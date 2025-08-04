@@ -1,4 +1,4 @@
-const { createHolding, getAllHoldings, getHoldingById, getHoldingByPid, getHoldingByAid } = require('../controllers/holdingController')
+const { createHolding, getAllHoldings, getHoldingById, getHoldingByPid, getHoldingByAid, deleteHolding } = require('../controllers/holdingController')
 const express = require('express')
 
 const router = express.Router()
@@ -32,5 +32,11 @@ router.get('/asset/:id', getHoldingByAid)
     /api/holding
 */
 router.post('/', createHolding)
+
+/*
+    DELETE Request -> Delete a holding by its ID
+    /api/holding/:id
+*/
+router.delete('/:id', deleteHolding)
 
 module.exports = router

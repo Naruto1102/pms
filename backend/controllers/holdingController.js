@@ -148,10 +148,43 @@ const getHoldingByAid = async (req, res) => {
 
 }
 
+// Function to delete a holding
+const deleteHolding = async (req, res) => {
+
+    try {
+
+        const { id } = req.params 
+
+        const holdingMatch = await Holding.findByPk(id)
+        if (!holdingMatch) {
+            return res.status (404).json({
+                message: 'No Holding Found!'
+            })
+        }
+
+        await holdingMatch.destroy()
+
+        const remainingHoldings = await Holding.findAll()
+
+        res.status(200).json({
+            message: 'Holding has been destroyed.',
+            remainingHoldings
+        })
+
+    } catch (err) {
+        res.status(500).json({
+            message: `Error deleting the holding: ${err}`
+        })
+    }
+
+}
+
+
 module.exports = {
     createHolding,
     getAllHoldings,
     getHoldingById,
     getHoldingByPid,
-    getHoldingByAid
+    getHoldingByAid,
+    deleteHolding
 }
