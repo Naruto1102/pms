@@ -6,6 +6,7 @@ const app = express ()
 
 const portfolioRoutes = require('./routes/portfolioRoutes')
 const assetRoutes = require('./routes/assetRoutes')
+const holdingRoutes = require('./routes/holdingRoutes')
 
 const PORT = process.env.PORT || 5000
 
@@ -18,6 +19,9 @@ app.use('/api/portfolio', portfolioRoutes)
 
 // Asset Routes
 app.use('/api/asset', assetRoutes)
+
+// Holding Routes
+app.use('/api/holding', holdingRoutes)
 
 initDB()
 
