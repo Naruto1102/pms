@@ -80,7 +80,69 @@ const getHoldingById = async (req, res) => {
 
     } catch (err) {
         res.status(500).json({
-            message: `Error creating the holding: ${err}`
+            message: `Error fetching the holding: ${err}`
+        })
+    }
+
+}
+
+// Function to get a holding by the Portfolio ID
+const getHoldingByPid = async (req, res) => {
+
+    try {
+
+        const { id } = req.params 
+
+        const holdingMatch = await Holding.findAll({
+            where: {
+                pid: id
+            }
+        })
+        if (!holdingMatch) {
+            return res.status (404).json({
+                message: 'No Holding Found with the needed PID!'
+            })
+        }
+
+        res.status(200).json({
+            message: 'Sure! Your requested PID returned a match.',
+            holdingMatch
+        })
+
+    } catch (err) {
+        res.status(500).json({
+            message: `Error fetching the holding: ${err}`
+        })
+    }
+
+}
+
+// Function to fetch all the holdings by a certain Asset
+const getHoldingByAid = async (req, res) => {
+
+    try {
+
+        const { id } = req.params 
+
+        const holdingMatch = await Holding.findAll({
+            where: {
+                aid: id
+            }
+        })
+        if (!holdingMatch) {
+            return res.status (404).json({
+                message: 'No Holding Found with the needed AID!'
+            })
+        }
+
+        res.status(200).json({
+            message: 'Sure! Your requested AID returned a match.',
+            holdingMatch
+        })
+
+    } catch (err) {
+        res.status(500).json({
+            message: `Error fetching the holding: ${err}`
         })
     }
 
@@ -89,5 +151,7 @@ const getHoldingById = async (req, res) => {
 module.exports = {
     createHolding,
     getAllHoldings,
-    getHoldingById
+    getHoldingById,
+    getHoldingByPid,
+    getHoldingByAid
 }
