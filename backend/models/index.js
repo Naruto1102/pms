@@ -43,6 +43,6 @@ Transaction.belongsTo(Asset, {
 module.exports = {
     Portfolio, 
     Asset, 
-    Transaction, 
+    Transaction,
     Holding
 }
